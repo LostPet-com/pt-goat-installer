@@ -89,7 +89,7 @@ public class AnalyticsTracker
         if (string.IsNullOrEmpty(sid) || sid.Length > 80) sid = Guid.NewGuid().ToString("N");
         var referrer = ctx.Request.Headers.Referer.ToString();
         Classify(referrer, host, out var type, out var name, out var terms);
-        var safePath = SafePath(ctx);
+        var safePath = SafePath(ctx.Request);
         var conn = db.Database.GetDbConnection();
         var opened = conn.State != ConnectionState.Open;
         if (opened) await conn.OpenAsync();
@@ -520,6 +520,7 @@ using System.Globalization;
 using LostPet.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace LostPet.Pages.Admin;
 
